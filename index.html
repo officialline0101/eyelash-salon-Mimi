@@ -329,7 +329,7 @@
             /* margin-top を適用しやすくする */
         }
 
-        /* ★修正：ローディングスピナーを全画面カバーに変更 */
+        /* ローディングスピナー（全画面カバー） */
         .loading-spinner {
             position: fixed;
             top: 0;
@@ -343,7 +343,7 @@
             align-items: center;
         }
 
-        /* ★追加：スピナーの箱のデザイン */
+        /* スピナーの箱のデザイン */
         .spinner-box {
             width: auto;
             height: auto;
@@ -364,7 +364,6 @@
             border-top-color: #00d1ff;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
-            /* マージン削除（flexで中央揃えするため） */
             margin: 0 auto; 
         }
 
@@ -831,6 +830,7 @@
         
         // ★ユーザーIDを保存する変数
         let currentUserId = '';
+        let currentUserName = ''; // ユーザー名も保存
 
         // ★初期化処理：スピナーを表示してID取得へ
         document.addEventListener('DOMContentLoaded', function () {
@@ -845,7 +845,8 @@
                 if (liff.isLoggedIn()) {
                     liff.getProfile().then(profile => {
                         currentUserId = profile.userId;
-                        console.log('User ID:', currentUserId);
+                        currentUserName = profile.displayName; // 名前を取得
+                        console.log('User:', currentUserName, 'ID:', currentUserId);
                         // ID取得後にカレンダー読み込み
                         fetchAvailability(currentDate);
                     }).catch(err => {
@@ -1042,7 +1043,7 @@
 
             console.log('選択されたメニューの時間:', selectedMenuTime);
 
-            // カレンダーを更新するために取得する日付を渡す
+            // カレンダーを更新するために取得する日付を渡す（ロード画面表示）
             fetchAvailability(currentDate);
 
             // 選択されたメニューの名前と価格を取得
@@ -1084,7 +1085,7 @@
 
             console.log('選択されたオプションの合計時間:', selectedirradiationsTime);
 
-            // カレンダーを更新するために取得する日付を渡す
+            // カレンダーを更新するために取得する日付を渡す（ロード画面表示）
             fetchAvailability(currentDate);
 
             // 表示を更新
@@ -1110,8 +1111,8 @@
 
             console.log('選択された訪問回数の時間:', selectedVisitTime);
 
-            // カレンダーを更新するために取得する日付を渡す
-            fetchAvailability(currentDate);
+            // ★変更：ここだけはロード画面を挟まないように false を渡す
+            fetchAvailability(currentDate, false);
         }
 
         function showMenu(menu) {
@@ -1225,7 +1226,8 @@
             return `${date.getFullYear()}年${('0' + (date.getMonth() + 1)).slice(-2)}月${('0' + date.getDate()).slice(-2)}日 ${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`;
         }
 
-        async function fetchAvailability(date) {
+        // 第2引数 showSpinner (デフォルト true) を追加
+        async function fetchAvailability(date, showSpinner = true) {
             const startTime = new Date(date);
             const endTime = new Date(date);
             endTime.setDate(endTime.getDate() + 7);
@@ -1234,11 +1236,13 @@
 
             // GASのURL
             const baseUrl = 'https://script.google.com/macros/s/AKfycbwCsSmofWm0ynaUrubq9l7fy1QtUVb53Q7XFeQ2LGCuYZggisGz4dW74i4Q_6sF37DJ/exec';
-            const url = `${baseUrl}?startTime=${startTime.toISOString()}&endTime=${endTime.toISOString()}&userId=${currentUserId}`;
+            const url = `${baseUrl}?startTime=${startTime.toISOString()}&endTime=${endTime.toISOString()}&userId=${currentUserId}&userName=${encodeURIComponent(currentUserName)}`;
 
             try {
-                // ★修正：コメントアウトを解除し、通信開始時にスピナーを表示する
-                showLoadingSpinner(); 
+                // showSpinnerが true の時だけ表示（画面操作ブロック）
+                if (showSpinner) {
+                    showLoadingSpinner();
+                }
 
                 const response = await fetch(url);
                 const data = await response.json();
@@ -1277,7 +1281,10 @@
                 // エラー時は一応画面を表示（必要に応じて制御）
                 document.getElementById('mainContainer').style.display = 'block';
             } finally {
-                hideLoadingSpinner();
+                // showSpinnerが true の時だけ非表示にする
+                if (showSpinner) {
+                    hideLoadingSpinner();
+                }
             }
         }
 
