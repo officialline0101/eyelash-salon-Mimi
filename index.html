@@ -329,58 +329,53 @@
             /* margin-top を適用しやすくする */
         }
 
+        /* ★修正：ローディングスピナーを全画面カバーに変更 */
         .loading-spinner {
             position: fixed;
-            /* 画面全体に対応 */
-            top: 50%;
-            /* 縦中央 */
-            left: 50%;
-            /* 横中央 */
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            width: 100%; /* 全画面幅 */
+            height: 100%; /* 全画面高さ */
+            background-color: rgba(255, 255, 255, 0.5); /* 背景を少し白くして操作不能感を出す */
+            z-index: 9999; /* 最前面 */
             display: none;
-            /* 初期状態は非表示 */
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.6);
-            /* 半透明の黒背景で注目度アップ */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ★追加：スピナーの箱のデザイン */
+        .spinner-box {
+            width: auto;
+            height: auto;
+            background-color: rgba(0, 0, 0, 0.6); /* 黒い半透明背景 */
             padding: 40px;
-            /* 周囲に余白をつける */
             border-radius: 10px;
-            /* 角丸で柔らかい印象 */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            /* 少し立体感を追加 */
-            z-index: 2000; /* 最前面に表示 */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .spinner {
             width: 60px;
-            /* スピナーをさらに大きく */
             height: 60px;
             border: 5px solid rgba(255, 255, 255, 0.2);
-            /* 薄い白で枠を柔らかく */
             border-top-color: #00d1ff;
-            /* 明るい青で目立たせる */
             border-radius: 50%;
-            /* 丸い形状 */
             animation: spin 0.7s linear infinite;
-            /* 滑らかで速い回転 */
-            margin-left: 12px;
-            /* スピナーを右にずらす */
+            /* マージン削除（flexで中央揃えするため） */
+            margin: 0 auto; 
         }
 
         .loading-text {
             margin-top: 20px;
-            /* スピナーとテキストの間隔 */
             font-size: 15px;
-            /* さらに大きなフォントサイズ */
             font-weight: bold;
-            /* 太字で目立たせる */
             color: #ffffff;
-            /* 純白で高いコントラスト */
             letter-spacing: 1px;
-            /* 文字間隔を広げてモダンな印象に */
             text-align: center;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            /* テキストに影をつけて視認性アップ */
         }
 
         @keyframes spin {
@@ -817,8 +812,10 @@
     </div>
 
     <div class="loading-spinner" id="loadingSpinner">
-        <div class="spinner"></div>
-        <div class="loading-text">読み込み中...</div>
+        <div class="spinner-box">
+            <div class="spinner"></div>
+            <div class="loading-text">読み込み中...</div>
+        </div>
     </div>
 
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
@@ -1240,7 +1237,8 @@
             const url = `${baseUrl}?startTime=${startTime.toISOString()}&endTime=${endTime.toISOString()}&userId=${currentUserId}`;
 
             try {
-                // showLoadingSpinner(); // DOMContentLoadedで既に呼んでいるのでコメントアウト
+                // ★修正：コメントアウトを解除し、通信開始時にスピナーを表示する
+                showLoadingSpinner(); 
 
                 const response = await fetch(url);
                 const data = await response.json();
@@ -1573,7 +1571,7 @@
         }
 
         function showLoadingSpinner() {
-            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('loadingSpinner').style.display = 'flex';
         }
 
         function hideLoadingSpinner() {
