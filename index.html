@@ -832,36 +832,37 @@
         let menuPrice = 0; // メニューの価格
         let optionsPrice = 0; // オプションの合計価格
         
-// ★変数の追加：ユーザー名を保存
+        // ★ユーザーIDを保存する変数
         let currentUserId = '';
-        let currentUserName = ''; // ★追加
 
-        // 初期化処理
+        // ★初期化処理：スピナーを表示してID取得へ
         document.addEventListener('DOMContentLoaded', function () {
+            // 画面読み込み開始と同時にスピナーを表示
             showLoadingSpinner();
 
             liff.init({
-                liffId: '2005254357-zKma9BZk'
+                liffId: '1661236907-68n7j0Kk'
             }).then(() => {
                 console.log('LIFF初期化成功');
+                // LIFFがログイン状態ならプロフィール取得
                 if (liff.isLoggedIn()) {
                     liff.getProfile().then(profile => {
                         currentUserId = profile.userId;
-                        currentUserName = profile.displayName; // ★追加：LINEの名前を取得
-                        console.log('User:', currentUserName, 'ID:', currentUserId);
-                        
+                        console.log('User ID:', currentUserId);
+                        // ID取得後にカレンダー読み込み
                         fetchAvailability(currentDate);
                     }).catch(err => {
                         console.error('プロフィール取得失敗', err);
-                        fetchAvailability(currentDate);
+                        fetchAvailability(currentDate); // 失敗してもカレンダーは読む
                     });
                 } else {
+                    // PCなど未ログインの場合
                     console.log('未ログイン状態');
                     fetchAvailability(currentDate);
                 }
             }).catch((err) => {
                 console.log('LIFF初期化失敗', err);
-                fetchAvailability(currentDate);
+                fetchAvailability(currentDate); // 失敗してもカレンダーは読む
             });
         });
 
@@ -1227,26 +1228,27 @@
             return `${date.getFullYear()}年${('0' + (date.getMonth() + 1)).slice(-2)}月${('0' + date.getDate()).slice(-2)}日 ${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}`;
         }
 
-async function fetchAvailability(date) {
+        async function fetchAvailability(date) {
             const startTime = new Date(date);
             const endTime = new Date(date);
             endTime.setDate(endTime.getDate() + 7);
 
-            // キャッシュキーに名前も含める
             const cacheKey = startTime.toISOString() + endTime.toISOString() + currentUserId;
 
-            const baseUrl = 'https://script.google.com/macros/s/AKfycbwiukKiCcTbFKzHYVenvSBlmwb02xf-pNBVCmnBdvO9yRHZde3DR4b5ejkcW4xhJavq/exec';
-            
-            // ★修正：URLに &userName=... を追加（日本語が含まれるため encodeURIComponent を使用）
-            const url = `${baseUrl}?startTime=${startTime.toISOString()}&endTime=${endTime.toISOString()}&userId=${currentUserId}&userName=${encodeURIComponent(currentUserName)}`;
+            // GASのURL
+            const baseUrl = 'https://script.google.com/macros/s/AKfycbwS21CQgOXPKJlF5I3KK4vxpmKv8DyEcunAfUDgi0qvYMGnIU65Mz-e7ni4RhlBjMF5/exec';
+            const url = `${baseUrl}?startTime=${startTime.toISOString()}&endTime=${endTime.toISOString()}&userId=${currentUserId}`;
 
             try {
+                // showLoadingSpinner(); // DOMContentLoadedで既に呼んでいるのでコメントアウト
+
                 const response = await fetch(url);
                 const data = await response.json();
 
+                // ★リダイレクト指示があれば、即座にページを移動させる
                 if (data.redirect && data.url) {
-                    window.location.href = data.url;
-                    return; 
+                    window.location.href = data.url; // 指定のURLへ移動
+                    return; // ★ここで処理終了（画面は真っ白のまま）
                 }
 
                 // ★通常ユーザーの場合：隠していたフォームを表示する
