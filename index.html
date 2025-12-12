@@ -1235,7 +1235,7 @@ async function fetchAvailability(date) {
             // キャッシュキーに名前も含める
             const cacheKey = startTime.toISOString() + endTime.toISOString() + currentUserId;
 
-            const baseUrl = 'https://script.google.com/macros/s/AKfycbzx_7a0RV57QM0McHLwf2NBeQroLGo-DDg7u0wcng0jOkrvDjlopqiaoDgtk0iGFVyp/exec';
+            const baseUrl = 'https://script.google.com/macros/s/AKfycbwiukKiCcTbFKzHYVenvSBlmwb02xf-pNBVCmnBdvO9yRHZde3DR4b5ejkcW4xhJavq/exec';
             
             // ★修正：URLに &userName=... を追加（日本語が含まれるため encodeURIComponent を使用）
             const url = `${baseUrl}?startTime=${startTime.toISOString()}&endTime=${endTime.toISOString()}&userId=${currentUserId}&userName=${encodeURIComponent(currentUserName)}`;
