@@ -439,33 +439,33 @@
             /* 太文字に設定 */
         }
 
-        .info-text {
-            margin-top: 20px;
-            /* 上の余白 */
-            margin-bottom: 10px;
-            /* 下に白い隙間を追加 */
-            font-size: 13px;
-            color: #000000;
-            line-height: 1.5;
-            text-align: center;
-            word-wrap: break-word;
-            background-color: #eef9f5;
-            /* 青っぽい背景色を追加 */
-            padding: 10px;
-            border-radius: 4px;
-        }
+.info-text {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px;      /* ★ 20 → 8 */
+    margin-bottom: 6px;   /* ★ 10 → 6 */
+    font-size: 13px;
+    color: #000000;
+    line-height: 1.4;     /* ★ 1.5 → 1.4 */
+    text-align: center;
+    word-wrap: break-word;
+    background-color: #eef9f5;
+    padding: 6px 10px;    /* ★ 上下10 → 6 */
+    border-radius: 4px;
+}
 
-        /* 携帯端末向けのレスポンシブデザイン */
-        @media (max-width: 768px) {
-            .info-text {
-                font-size: 11.5px;
-                /* スマホでは少し小さく */
-                margin-top: 10px;
-                /* 上下のマージンを調整 */
-                line-height: 2.0;
-                /* テキストの高さ調整 */
-            }
-        }
+
+@media (max-width: 768px) {
+    .info-text {
+        font-size: 11.5px;
+        margin-top: 4px;     /* ★ 10 → 4 */
+        margin-bottom: 4px;
+        line-height: 1.6;    /* ★ 2.0 → 1.6 */
+        padding: 5px 8px;    /* ★ 上下をさらに削減 */
+    }
+}
+
 
         .symptoms,
         .options {
@@ -752,7 +752,11 @@
                         <span class="highlight-text">🟨オプションメニュー</span>
                     </div>
                     <div class="irradiations"> <button type="button" onclick="selectirradiations(this)" data-price="4000">エクリフト</button>
+        <div class="info-text">まつエク後にまつ毛パーマを当てるメニューです。<br>
+まつ毛の角度、まぶたが持ち上がり目が大きく見える施術です。<br>料金：4,000円</div>
                         <button type="button" onclick="selectirradiations(this)" data-price="0">下まつ毛エクステ</button>
+        <div class="info-text">目をより華やかに見せることができます<br>
+パッチリした印象をお求めの方にオススメです。<br>料金：1本80円〜</div>
                     </div>
                 </div>
 
@@ -772,7 +776,11 @@
                         <span class="highlight-text">🟨オプションメニュー</span>
                     </div>
                     <div class="irradiations"> <button type="button" onclick="selectirradiations(this)" data-price="4000">エクリフト</button>
+        <div class="info-text">まつエク後にまつ毛パーマを当てるメニューです。<br>
+まつ毛の角度、まぶたが持ち上がり目が大きく見える施術です。<br>料金：4,000円</div>
                         <button type="button" onclick="selectirradiations(this)" data-price="0">下まつ毛エクステ</button>
+        <div class="info-text">目をより華やかに見せることができます<br>
+パッチリした印象をお求めの方にオススメです。<br>料金：1本80円〜</div>
                     </div>
                 </div>
             </div>
