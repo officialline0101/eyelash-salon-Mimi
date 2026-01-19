@@ -681,6 +681,22 @@
             padding: 50px 10px;
             margin-top: 30px;
         }
+
+        #treatment-text {
+            background-color: #f9f9f9;
+            padding: 16px 20px;
+            border: 1px solid #000000;
+            border-top: none;
+            /* ← 上の横線を非表示 */
+            border-radius: 0 0 3px 3px;
+            /* ← 上の角の丸みをなくして自然に */
+            margin-top: -13px;
+            /* ← 少し上に詰める（12px → 4px） */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 15px;
+            line-height: 1.6;
+            color: #000000;
+        }
     </style>
 </head>
 
@@ -706,64 +722,99 @@
             <button type="button" id="repeatVisit" onclick="selectVisit(this)">2回目以降</button>
         </div>
 
-        <div class="label" id="course">メニューをお選びください<span class="required">必須</span></div>
-        <div class="menu-sections">
-            <button type="button" onclick="showMenu('male')">マツエク</button>
-            <button type="button" onclick="showMenu('female')">ラッシュリフト</button>
-            <button type="button" onclick="showMenu('whitening')">ハリウッドブロウリフト</button>
-            <button type="button" onclick="showMenu('fice')">フェイシャルワックス</button>
-        </div>
+        <div id="treatment-text" style="display: none; margin-bottom: 10px;"></div>
 
-        <div id="male" class="menu-section">
-            <div class="highlight-background">
-                <span class="highlight-text">◆マツエク◆</span>
+        <div id="menuSelectionContainer" style="display: none;">
+            <div class="label" id="course">メニューをお選びください<span class="required">必須</span></div>
+            <div class="menu-sections">
+                <button type="button" onclick="showMenu('male')">マツエク</button>
+                <button type="button" onclick="showMenu('female')">ラッシュリフト</button>
+                <button type="button" onclick="showMenu('whitening')">ハリウッドブロウリフト</button>
+                <button type="button" onclick="showMenu('fice')">フェイシャルワックス</button>
             </div>
-            <div class="symptoms">
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】デザインキープラッシュ<br>80本~100本</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】デザインキープラッシュ<br>120本~140本</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】デザインキープラッシュ<br>80本、100本、120本リペア</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】デザインキープラッシュ<br>140本リペア</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">下まつ毛エクステ</button>
-            </div>
-        </div>
 
-        <div id="female" class="menu-section">
-            <div class="highlight-background">
-                <span class="highlight-text">◆ラッシュリフト◆</span>
-            </div>
-            <div class="symptoms">
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト上のみを<br>ご希望の方</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト上下のみを<br>ご希望の方</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト上のみを<br>ご希望の方</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト上下のみを<br>ご希望の方</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト&<br>ハリウッドブロウリフト</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト&<br>ハリウッドブロウリフト</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト上下&<br>ハリウッドブロウリフト</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト上下&<br>ハリウッドブロウリフト</button>
-            </div>
-        </div>
+            <div id="male" class="menu-section">
+                <div class="highlight-background">
+                    <span class="highlight-text">◆マツエク◆</span>
+                </div>
 
-        <div id="whitening" class="menu-section">
-            <div class="highlight-background">
-                <span class="highlight-text">◆ハリウッドブロウリフト◆</span>
-            </div>
-            <div class="symptoms">
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ハリウッドブロウリフト</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ハリウッドブロウリフト</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト &<br>ハリウッドブロウリフト</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト &<br>ハリウッドブロウリフト</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト上下&<br>ハリウッドブロウリフト</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト上下&<br>ハリウッドブロウリフト</button>
-            </div>
-        </div>
+                <div id="menu-new-visitor" style="display: none;">
+                    <div class="highlight-background">
+                        <span class="highlight-text">🟨分岐先メニュー</span>
+                    </div>
+                    <div class="symptoms">
+                        <button type="button" onclick="selectSymptom(this, 'new_80')" data-price="0">デザインキープラッシュ 80本</button>
+                        <button type="button" onclick="selectSymptom(this, 'new_100')" data-price="0">デザインキープラッシュ 100本</button>
+                        <button type="button" onclick="selectSymptom(this, 'new_120')" data-price="0">デザインキープラッシュ 120本</button>
+                        <button type="button" onclick="selectSymptom(this, 'new_140')" data-price="0">デザインキープラッシュ 140本</button>
+                    </div>
+                    <div class="highlight-background">
+                        <span class="highlight-text">🟨オプションメニュー</span>
+                    </div>
+                    <div class="irradiations"> <button type="button" onclick="selectirradiations(this)" data-price="4000">エクリフト</button>
+                        <button type="button" onclick="selectirradiations(this)" data-price="0">下まつ毛エクステ</button>
+                    </div>
+                </div>
 
-        <div id="fice" class="menu-section">
-            <div class="highlight-background">
-                <span class="highlight-text">◆ハリウッドブロウリフト◆</span>
+                <div id="menu-repeat-visitor" style="display: none;">
+                    <div class="highlight-background">
+                        <span class="highlight-text">分岐先メニュー</span>
+                    </div>
+                    <div class="symptoms">
+                        <button type="button" onclick="selectSymptom(this, 'rep_mix')" data-price="0">【リペア】デザインキープラッシュ<br>80本/100本/120本</button>
+                        <button type="button" onclick="selectSymptom(this, 'rep_140')" data-price="0">【リペア】デザインキープラッシュ 140本</button>
+                        <button type="button" onclick="selectSymptom(this, 'chg_80')" data-price="0">【付け替え】デザインキープラッシュ 80本</button>
+                        <button type="button" onclick="selectSymptom(this, 'chg_100')" data-price="0">【付け替え】デザインキープラッシュ 100本</button>
+                        <button type="button" onclick="selectSymptom(this, 'chg_120')" data-price="0">【付け替え】デザインキープラッシュ 120本</button>
+                        <button type="button" onclick="selectSymptom(this, 'chg_140')" data-price="0">【付け替え】デザインキープラッシュ 140本</button>
+                    </div>
+                    <div class="highlight-background">
+                        <span class="highlight-text">🟨オプションメニュー</span>
+                    </div>
+                    <div class="irradiations"> <button type="button" onclick="selectirradiations(this)" data-price="4000">エクリフト</button>
+                        <button type="button" onclick="selectirradiations(this)" data-price="0">下まつ毛エクステ</button>
+                    </div>
+                </div>
             </div>
-            <div class="symptoms">
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">フェイシャルワックス</button>
-                <button type="button" onclick="selectSymptom(this)" data-price="15000">部分フェイシャルワックス</button>
+
+            <div id="female" class="menu-section">
+                <div class="highlight-background">
+                    <span class="highlight-text">◆ラッシュリフト◆</span>
+                </div>
+                <div class="symptoms">
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト上のみを<br>ご希望の方</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト上下のみを<br>ご希望の方</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト上のみを<br>ご希望の方</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト上下のみを<br>ご希望の方</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト&<br>ハリウッドブロウリフト</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト&<br>ハリウッドブロウリフト</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト上下&<br>ハリウッドブロウリフト</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト上下&<br>ハリウッドブロウリフト</button>
+                </div>
+            </div>
+
+            <div id="whitening" class="menu-section">
+                <div class="highlight-background">
+                    <span class="highlight-text">◆ハリウッドブロウリフト◆</span>
+                </div>
+                <div class="symptoms">
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ハリウッドブロウリフト</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ハリウッドブロウリフト</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト &<br>ハリウッドブロウリフト</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト &<br>ハリウッドブロウリフト</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【ご新規様】ラッシュリフト上下&<br>ハリウッドブロウリフト</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">【再来】ラッシュリフト上下&<br>ハリウッドブロウリフト</button>
+                </div>
+            </div>
+
+            <div id="fice" class="menu-section">
+                <div class="highlight-background">
+                    <span class="highlight-text">◆ハリウッドブロウリフト◆</span>
+                </div>
+                <div class="symptoms">
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">フェイシャルワックス</button>
+                    <button type="button" onclick="selectSymptom(this)" data-price="15000">部分フェイシャルワックス</button>
+                </div>
             </div>
         </div>
 
@@ -831,6 +882,10 @@
         // ★ユーザーIDを保存する変数
         let currentUserId = '';
         let currentUserName = ''; // ユーザー名も保存
+        
+        // ★イベントデータを保存する変数（高速化用）
+        let currentEventsData = [];
+        let currentBusinessDays = [];
 
         // ★初期化処理：スピナーを表示してID取得へ
         document.addEventListener('DOMContentLoaded', function () {
@@ -872,18 +927,29 @@
 
         let selectedVisitTime = 0; // 訪問回数で選択された時間
 
+        // ★オプションの時間を追加
         let irradiationsTimes = {
-            '美白パック〈30分〉': 0
+            '美白パック〈30分〉': 0,
+            'エクリフト': 20,
+            '下まつ毛エクステ': 30
         };
 
         let selectedirradiationsTime = 0; 
 
         let menuTimes = {
-            '【ご新規様】デザインキープラッシュ80本~100本': 90,
-            '【ご新規様】デザインキープラッシュ120本~140本': 120,
-            '【再来】デザインキープラッシュ80本、100本、120本リペア': 90,
-            '【再来】デザインキープラッシュ140本リペア': 120,
+            'デザインキープラッシュ 80本': 90,
+            'デザインキープラッシュ 100本': 120,
+            'デザインキープラッシュ 120本': 150,
+            'デザインキープラッシュ 140本': 150,
+            '【リペア】デザインキープラッシュ 80本/100本/120本': 90,
+            '【リペア】デザインキープラッシュ 140本': 120,
+            '【付け替え】デザインキープラッシュ 80本': 120,
+            '【付け替え】デザインキープラッシュ 100本': 120,
+            '【付け替え】デザインキープラッシュ 120本': 150,
+            '【付け替え】デザインキープラッシュ 140本': 150,
+            'エクリフト': 20,
             '下まつ毛エクステ': 30,
+
             '【ご新規様】ラッシュリフト上のみをご希望の方': 60,
             '【ご新規様】ラッシュリフト上下のみをご希望の方': 90,
             '【再来】ラッシュリフト上のみをご希望の方': 60,
@@ -1019,14 +1085,24 @@
             // ボタンの選択状態を切り替える
             button.classList.toggle('active');
 
+            // ローカルストレージに保存する配列を取得
+            let selectedSymptoms = JSON.parse(localStorage.getItem('selectedSymptoms') || '[]');
+
+            // 選択した症状をローカルストレージに保存（1つだけ保持）
+            selectedSymptoms = [treatmentId];
+            localStorage.setItem('selectedSymptoms', JSON.stringify(selectedSymptoms));
+
             // 選択されたオプションを取得
             const updatedSelectedButtons = document.querySelectorAll('.symptoms button.active');
+            const treatmentText = document.getElementById('treatment-text');
 
             if (updatedSelectedButtons.length === 0) {
                 // すべてのボタンの選択が解除された場合、メニュー時間を0にリセット
                 selectedMenuTime = 0;
                 selectedSymptom = null; // 選択されたメニューをリセット
                 menuPrice = 0; // メニュー価格をリセット
+                treatmentText.style.display = 'none';
+                return; // ここで処理を終了
             } else {
                 // 1つだけ選択状態にする
                 if (updatedSelectedButtons.length > 1) {
@@ -1035,25 +1111,60 @@
                 }
 
                 // 選択されたメニューの時間を取得して保存
-                const selectedMenu = button.textContent;
+                const selectedMenu = button.textContent.split('\n')[0].trim(); // 改行がある場合、1行目を取得
                 selectedMenuTime = menuTimes[selectedMenu] || 0; // メニュー時間を取得して保存
-                selectedSymptom = [selectedMenu]; // 選択されたメニュー名を配列として保存
+                selectedSymptom = [button.textContent.replace(/\n/g, ' ')]; // 表示用に保存（改行はスペースに）
                 menuPrice = parseInt(button.getAttribute('data-price'), 10) || 0;  // メニューの価格を取得
             }
 
             console.log('選択されたメニューの時間:', selectedMenuTime);
 
-            // カレンダーを更新するために取得する日付を渡す（ロード画面表示）
-            fetchAvailability(currentDate);
+            // ★高速化：保存したデータを使って再描画
+            updateCalendar(currentEventsData, currentBusinessDays);
 
-            // 選択されたメニューの名前と価格を取得
-            const symptomName = button.textContent;  // ボタンのテキストを取得
-            selectedSymptom = [symptomName];  // 選択されたメニュー名を配列として保存
-            menuPrice = parseInt(button.getAttribute('data-price'), 10) || 0;  // メニューの価格を取得
+            // treatmentIdに基づくテキスト表示
+            let displayText = '';
+            
+            // --- 1回目用 ---
+            if (treatmentId === 'new_80') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：90分</strong><br>本数をお悩みの方は相談しながら決めることもできますので所要時間の長いメニューよりご予約ください。</div>`;
+            } else if (treatmentId === 'new_100') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>本数をお悩みの方は相談しながら決めることもできますので所要時間の長いメニューよりご予約ください。</div>`;
+            } else if (treatmentId === 'new_120') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：150分</strong><br>本数をお悩みの方は相談しながら決めることもできますので所要時間の長いメニューよりご予約ください。</div>`;
+            } else if (treatmentId === 'new_140') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：150分</strong><br>本数をお悩みの方は相談しながら決めることもできますので所要時間の長いメニューよりご予約ください。</div>`;
+            } 
+            // --- 2回目用 ---
+            else if (treatmentId === 'rep_mix') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：90分</strong></div>`;
+            } else if (treatmentId === 'rep_140') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：120分</strong></div>`;
+            } else if (treatmentId === 'chg_80' || treatmentId === 'chg_100') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：120分</strong><br>リペア期間が過ぎた方、もしくは付け替えたい方はこちらをご選択ください。</div>`;
+            } else if (treatmentId === 'chg_120' || treatmentId === 'chg_140') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：150分</strong><br>リペア期間が過ぎた方、もしくは付け替えたい方はこちらをご選択ください。</div>`;
+            } 
+            // --- 既存のその他メニュー ---
+            else if (treatmentId === 'treatment1') {
+                displayText = `<div style="text-align: left;"><strong>所要時間：90分</strong><br>※症状によりお時間が前後する場合がございます</div><div style="text-align: right;"><strong>料金：6,500円<br>初診料：＋2,200円</strong></div>`;
+            } else {
+                 // 該当しない場合（他のメニューなど）はテキストを空に、またはデフォルト処理
+                 // ここでは何もしない
+            }
+
+            if(displayText) {
+                treatmentText.innerHTML = displayText;
+                button.parentNode.insertBefore(treatmentText, button.nextSibling);
+                treatmentText.style.display = 'block';
+            } else {
+                 treatmentText.style.display = 'none';
+            }
 
             // 表示を更新
             updateDisplayInfo();
         }
+
 
         function selectirradiations(button) {
             // 選択された日時をリセット
@@ -1085,8 +1196,8 @@
 
             console.log('選択されたオプションの合計時間:', selectedirradiationsTime);
 
-            // カレンダーを更新するために取得する日付を渡す（ロード画面表示）
-            fetchAvailability(currentDate);
+            // ★高速化：保存したデータを使って再描画
+            updateCalendar(currentEventsData, currentBusinessDays);
 
             // 表示を更新
             updateDisplayInfo();
@@ -1109,10 +1220,33 @@
             // 選択された訪問回数に対応する時間を取得
             selectedVisitTime = visitTimes[visitCount];
 
+            // ★来店回数が選択されたので、メニューコンテナを表示する
+            document.getElementById('menuSelectionContainer').style.display = 'block';
+
+            // ★来店回数に応じてマツエクメニューの表示を切り替え
+            const newVisitorMenu = document.getElementById('menu-new-visitor');
+            const repeatVisitorMenu = document.getElementById('menu-repeat-visitor');
+
+            if (visitCount === '1回目') {
+                newVisitorMenu.style.display = 'block';
+                repeatVisitorMenu.style.display = 'none';
+            } else {
+                newVisitorMenu.style.display = 'none';
+                repeatVisitorMenu.style.display = 'block';
+            }
+            
+            // メニューの選択状態を一度リセットする（混乱を防ぐため）
+            selectedSymptom = [];
+            selectedMenuTime = 0;
+            menuPrice = 0;
+            document.querySelectorAll('.menu-section button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('treatment-text').style.display = 'none';
+            updateDisplayInfo();
+
             console.log('選択された訪問回数の時間:', selectedVisitTime);
 
-            // ★変更：ここだけはロード画面を挟まないように false を渡す
-            fetchAvailability(currentDate, false);
+            // ★高速化：保存したデータを使って再描画
+            updateCalendar(currentEventsData, currentBusinessDays);
         }
 
         function showMenu(menu) {
@@ -1136,13 +1270,32 @@
 
             // 選択されたメニューセクションを表示
             document.getElementById(menu).classList.add('active');
+            
+            // ★マツエク(male)が選ばれた場合、現在の来店回数設定に従って表示を制御
+            if(menu === 'male') {
+                const newVisitorMenu = document.getElementById('menu-new-visitor');
+                const repeatVisitorMenu = document.getElementById('menu-repeat-visitor');
+                if (visitCount === '1回目') {
+                    newVisitorMenu.style.display = 'block';
+                    repeatVisitorMenu.style.display = 'none';
+                } else if (visitCount === '2回目以降') {
+                    newVisitorMenu.style.display = 'none';
+                    repeatVisitorMenu.style.display = 'block';
+                } else {
+                    // 来店回数が未選択の場合は両方非表示、またはデフォルトの案内を出すなどが考えられますが
+                    // ここでは一旦両方非表示にしておきます（来店回数選択を促すため）
+                    newVisitorMenu.style.display = 'none';
+                    repeatVisitorMenu.style.display = 'none';
+                }
+            }
 
             // メニューとオプションをリセット
-            selectedSymptom = '';      // メニューのリセット
+            selectedSymptom = '';       // メニューのリセット
             irradiationsCount = '';    // オプションのリセット
             menuPrice = 0;             // メニューの価格リセット
             optionsPrice = 0;          // オプションの価格リセット
             totalAmount = 0;           // 合計金額リセット
+            document.getElementById('treatment-text').style.display = 'none';
 
             // 表示を更新
             updateDisplayInfo();
@@ -1208,7 +1361,7 @@
             // LINEトークにメッセージを送信
             liff.sendMessages([{
                 type: 'text',
-                text: `【予約フォーム】\nお名前：${formData.name}\n電話番号：${formData.phone}\nご来店回数：${formData.visitCount}\nメニュー：${formData.selectedSymptom}\n希望日時：\n ${formData.dates[0]}\nメッセージ：${formData.message}`
+                text: `【予約フォーム】\nお名前：${formData.name}\n電話番号：${formData.phone}\nご来店回数：${formData.visitCount}\nメニュー：${formData.selectedSymptom}\nオプション：${formData.irradiationsCount}\n希望日時：\n ${formData.dates[0]}\nメッセージ：${formData.message}`
             }]).then(() => {
                 /* メッセージ送信成功時の処理 */
                 alert('当日キャンセルは無いようにお願いいたします。');
@@ -1273,6 +1426,10 @@
                     };
                 });
 
+                // ★ここでデータをグローバル変数に保存
+                currentEventsData = eventsData;
+                currentBusinessDays = businessDays;
+
                 availabilityCache[cacheKey] = { availability: eventsData, businessDays: businessDays };
                 updateCalendar(eventsData, businessDays);
 
@@ -1299,6 +1456,7 @@
                 '16:00', '16:30', '17:00', '17:30', '18:00'
             ];
 
+            // テーブル初期化（行がない場合のみ作成）
             if (table.rows.length === 0) {
                 for (const time of times) {
                     const row = document.createElement('tr');
@@ -1311,7 +1469,6 @@
                         cell.addEventListener('click', () => selectDate(cell));
                         row.appendChild(cell);
                     }
-
                     table.appendChild(row);
                 }
             }
@@ -1319,134 +1476,139 @@
             // テーブルのヘッダーを更新
             updateCalendarHeader(currentDate);
 
-            // 各セルを空白にリセットし、クラスもリセット
-            for (let row of table.rows) {
-                for (let i = 1; i < row.cells.length; i++) {
-                    row.cells[i].textContent = '';
-                    row.cells[i].removeAttribute('data-date');
-                    row.cells[i].classList.remove('available', 'unavailable', 'selected');
-                }
-            }
+            // ★高速化ポイント1：イベントの日付変換をループの外で1回だけ行う
+            const parsedEvents = availability.map(slot => ({
+                title: slot.title,
+                start: new Date(slot.startTime),
+                end: new Date(slot.endTime),
+                isBusinessDay: slot.title === "営業日"
+            }));
 
+            // ★高速化ポイント2：営業日データも事前に整理
+            const parsedBusinessDays = businessDays.map(bd => ({
+                start: new Date(bd.start),
+                end: new Date(bd.end)
+            }));
 
-            // 現在の日時を取得
+            // 現在の日時
             const now = new Date();
 
-            // テーブルの内容を更新
+            // 7日分のループ
             for (let i = 0; i < 7; i++) {
                 const day = new Date(currentDate);
                 day.setDate(day.getDate() + i);
+                
+                // 日付比較用の文字列を作成（YYYY-MM-DD）
+                const dayStr = day.toDateString();
 
-                let businessEventTimes = []; // 営業日のイベント時間帯を記録する配列
+                // ★高速化ポイント3：その日のイベントだけを抽出しておく（計算量を減らす）
+                // 営業日のイベント
+                const todaysBusinessEvents = parsedEvents.filter(e => 
+                    e.isBusinessDay && e.start.toDateString() === dayStr
+                );
+                
+                // 予約済みなどの他のイベント（営業日以外）
+                const todaysOtherEvents = parsedEvents.filter(e => 
+                    !e.isBusinessDay && (
+                        e.start.toDateString() === dayStr || 
+                        e.end.toDateString() === dayStr ||
+                        (e.start < day && e.end > day) // 日をまたぐイベント対応
+                    )
+                );
 
-                availability.forEach(slot => {
-                    const eventStart = new Date(slot.startTime);
-                    const eventEnd = new Date(slot.endTime);
-                    if (eventStart.toDateString() === day.toDateString() && slot.title === "営業日") {
-                        businessEventTimes.push({ start: eventStart, end: eventEnd });
-                    }
-                });
+                // その日の営業時間を把握
+                let businessEventTimes = todaysBusinessEvents.map(e => ({ start: e.start, end: e.end }));
 
+                // 時間枠ごとのループ
                 for (let j = 0; j < times.length; j++) {
                     const cell = table.rows[j].cells[i + 1];
 
-                    // すでにセルが✕の場合はスキップする
-                    if (cell.textContent === '✕') {
-                        continue;
-                    }
+                    // セルのリセット
+                    cell.textContent = '';
+                    cell.removeAttribute('data-date');
+                    cell.className = ''; // クラスを全削除
 
+                    const [hour, minute] = times[j].split(':').map(Number);
                     const slotStart = new Date(day);
-                    slotStart.setHours(parseInt(times[j].split(':')[0]), parseInt(times[j].split(':')[1]), 0, 0);
+                    slotStart.setHours(hour, minute, 0, 0);
 
                     const slotEnd = new Date(slotStart);
-                    let menuDuration = selectedMenuTime || 10;
+                    let menuDuration = selectedMenuTime || 10; // デフォルト10分
                     let visitDuration = selectedVisitTime || 0;
                     let irradiationsDuration = selectedirradiationsTime || 0;
 
-                    // メニュー時間と訪問回数の時間を合計して、終了時間を設定
+                    // 終了時間を計算
                     slotEnd.setMinutes(slotStart.getMinutes() + menuDuration + visitDuration + irradiationsDuration);
 
-                    // 終了時間が翌日 (0時以降) になる場合は✕に設定
-                    if (slotEnd.getDate() !== slotStart.getDate()) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                        continue;
-                    }
+                    cell.setAttribute('data-date', slotStart.toISOString());
 
-                    // 18時以降に終了する予約を不可にする (17:30は可)
-                    if (slotEnd.getHours() === 18 && slotEnd.getMinutes() > 0) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                        continue;
-                    } else if (slotEnd.getHours() > 18) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                        continue;
-                    }
+                    // --- 判定ロジック ---
 
-                    // ここで終了時間を使った条件処理を行う
-                    // 例えば、リアルタイムで既に過ぎた時間帯は×にする
+                    // 1. 過去の日時は×
                     if (slotStart < now) {
                         cell.textContent = '✕';
                         cell.classList.add('unavailable');
                         continue;
                     }
 
-                    const isBusinessDay = businessDays.some(businessDay => {
-                        const businessDayStart = new Date(businessDay.start);
-                        const businessDayEnd = new Date(businessDay.end);
-                        return slotStart >= businessDayStart && slotEnd <= businessDayEnd;
-                    });
+                    // 2. 日付をまたぐ予約は×
+                    if (slotEnd.getDate() !== slotStart.getDate()) {
+                        cell.textContent = '✕';
+                        cell.classList.add('unavailable');
+                        continue;
+                    }
 
-                    const isBusinessEventTime = businessEventTimes.some(event => {
-                        return slotStart < event.end && event.start < slotEnd;
-                    });
+                    // 3. 18:00以降に終わる予約は× (18:00ジャスト終了はOKとする場合)
+                    if (slotStart.getHours() >= 18 || (slotEnd.getHours() === 18 && slotEnd.getMinutes() > 0) || slotEnd.getHours() > 18) {
+                         cell.textContent = '✕';
+                         cell.classList.add('unavailable');
+                         continue;
+                    }
 
-                    const count = availability.reduce((acc, slot) => {
-                        const eventStart = new Date(slot.startTime);
-                        const eventEnd = new Date(slot.endTime);
+                    // 4. 営業日かどうかのチェック
+                    const isBusinessTime = businessEventTimes.some(be => 
+                        slotStart >= be.start && slotEnd <= be.end
+                    );
 
-                        if (eventStart < slotEnd && slotStart < eventEnd && slot.title !== "営業日") {
-                            return acc + 1;
+                    // 5. 他の予約と重なっていないかチェック
+                    // ★高速化ポイント4：抽出済みの todaysOtherEvents だけで比較する
+                    const isOverlap = todaysOtherEvents.some(event => 
+                        event.start < slotEnd && slotStart < event.end
+                    );
+
+                    // --- 最終判定 ---
+
+                    // 営業日設定がある日
+                    if (businessEventTimes.length > 0) {
+                        if (!isBusinessTime) {
+                            cell.textContent = '✕';
+                            cell.classList.add('unavailable');
+                        } else if (isOverlap) {
+                            cell.textContent = '✕';
+                            cell.classList.add('unavailable');
+                        } else {
+                            cell.textContent = '◯';
+                            cell.classList.add('available');
                         }
-                        return acc;
-                    }, 0);
-
-                    // 営業日のイベント時間内に他のイベントがある場合
-                    if (isBusinessEventTime && count > 0) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                    }
-                    // 営業日のイベント時間（他のイベントがない場合）
-                    else if (isBusinessEventTime) {
-                        cell.textContent = '◯';
-                        cell.classList.add('available');
-                    }
-                    // 営業日で、指定されている時間以外の時間は×
-                    else if (businessEventTimes.length > 0) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                    }
-                    // 日曜日で、営業日ではない場合
-                    else if (slotStart.getDay() === 0 && !isBusinessDay && businessEventTimes.length === 0) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                    }
-                    // 営業日でかつ他のイベントがない場合
-                    else if (isBusinessDay && count === 0) {
-                        cell.textContent = '◯';
-                        cell.classList.add('available');
-                    }
-                    // それ以外の条件
-                    else if (count === 0) {
-                        cell.textContent = '◯';
-                        cell.classList.add('available');
                     } else {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                    }
+                        // 営業日イベントがない場合
+                        const isBasicBusinessDay = parsedBusinessDays.some(bd => 
+                            slotStart >= bd.start && slotEnd <= bd.end
+                        );
 
-                    cell.setAttribute('data-date', slotStart.toISOString());
+                        if (slotStart.getDay() === 0 && !isBasicBusinessDay) {
+                            cell.textContent = '✕';
+                            cell.classList.add('unavailable');
+                        } 
+                        else if (isOverlap) {
+                            cell.textContent = '✕';
+                            cell.classList.add('unavailable');
+                        } 
+                        else {
+                            cell.textContent = '◯';
+                            cell.classList.add('available');
+                        }
+                    }
                 }
             }
         }
@@ -1457,73 +1619,13 @@
 
             // サンプルの祝日データ（必要に応じて動的に取得も検討）
             const holidays = [
-                '2025-02-11', // 建国記念の日
-                '2025-02-23', // 天皇誕生日
-                '2025-02-24', // 天皇誕生日 振替休日
-                '2025-03-20', // 春分の日
-                '2025-04-29', // 昭和の日
-                '2025-05-03', // 憲法記念日
-                '2025-05-04', // みどりの日
-                '2025-05-05', // こどもの日
-                '2025-05-06', // みどりの日 振替休日
-                '2025-07-21', // 海の日
-                '2025-08-11', // 山の日
-                '2025-09-15', // 敬老の日
-                '2025-09-23', // 秋分の日
-                '2025-10-13', // 体育の日
-                '2025-11-03', // 文化の日
-                '2025-11-23', // 勤労感謝の日
-                '2025-11-24', // 勤労感謝の日 振替休日
-                '2026-01-01', // 元日
-                '2026-01-12', // 成人の日
-                '2026-02-11', // 建国記念の日
-                '2026-02-23', // 天皇誕生日
-                '2026-03-20', // 春分の日
-                '2026-04-29', // 昭和の日
-                '2026-05-03', // 憲法記念日
-                '2026-05-04', // 憲法記念日 振替休日
-                '2026-05-05', // みどりの日
-                '2026-05-06', // こどもの日
-                '2026-07-20', // 海の日
-                '2026-08-11', // 山の日
-                '2026-09-21', // 敬老の日
-                '2026-09-22', // 国民の休日
-                '2026-09-23', // 秋分の日
-                '2026-10-12', // 体育の日
-                '2026-11-03', // 文化の日
-                '2026-11-23', // 勤労感謝の日
-                '2027-01-01', // 元日
-                '2027-01-11', // 成人の日
-                '2027-02-11', // 建国記念の日
-                '2027-02-23', // 天皇誕生日
-                '2027-03-20', // 春分の日
-                '2027-04-29', // 昭和の日
-                '2027-05-03', // 憲法記念日
-                '2027-05-04', // みどりの日
-                '2027-05-05', // こどもの日
-                '2027-07-19', // 海の日
-                '2027-08-11', // 山の日
-                '2027-09-20', // 敬老の日
-                '2027-09-23', // 秋分の日
-                '2027-10-11', // 体育の日
-                '2027-11-03', // 文化の日
-                '2027-11-23', // 勤労感謝の日
-                '2028-01-01', // 元日
-                '2028-01-10', // 成人の日
-                '2028-02-11', // 建国記念の日
-                '2028-02-23', // 天皇誕生日
-                '2028-03-20', // 春分の日
-                '2028-04-29', // 昭和の日
-                '2028-05-03', // 憲法記念日
-                '2028-05-04', // みどりの日
-                '2028-05-05', // こどもの日
-                '2028-07-17', // 海の日
-                '2028-08-11', // 山の日
-                '2028-09-18', // 敬老の日
-                '2028-09-22', // 秋分の日
-                '2028-10-09', // 体育の日
-                '2028-11-03', // 文化の日
-                '2028-11-23'  // 勤労感謝の日
+                '2025-02-11', '2025-02-23', '2025-02-24', '2025-03-20', '2025-04-29', 
+                '2025-05-03', '2025-05-04', '2025-05-05', '2025-05-06', '2025-07-21', 
+                '2025-08-11', '2025-09-15', '2025-09-23', '2025-10-13', '2025-11-03', 
+                '2025-11-23', '2025-11-24', '2026-01-01', '2026-01-12', '2026-02-11', 
+                '2026-02-23', '2026-03-20', '2026-04-29', '2026-05-03', '2026-05-04', 
+                '2026-05-05', '2026-05-06', '2026-07-20', '2026-08-11', '2026-09-21', 
+                '2026-09-22', '2026-09-23', '2026-10-12', '2026-11-03', '2026-11-23'
             ];
 
             const startDate = new Date(date);
@@ -1537,7 +1639,6 @@
 
                 th.innerHTML = dayString.replace('(', '<br>(');
 
-                // 祝日を赤色に変更（曜日判定ではなく完全一致判定）
                 if (holidays.includes(formattedDate)) {
                     th.style.color = 'red';
                 } else if (day.getDay() === 0) { // 日曜日（赤）
