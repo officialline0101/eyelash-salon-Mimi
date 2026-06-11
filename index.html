@@ -1530,7 +1530,8 @@ ${formData.dates[0]}
                 '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
                 '12:00', '12:30', '13:00', '13:30',
                 '14:00', '14:30', '15:00', '15:30',
-                '16:00', '16:30', '17:00', '17:30', '18:00'
+                '16:00', '16:30', '17:00', '17:30', '18:00',
+                '18:30', '19:00', '19:30', '20:00', '20:30'
             ];
 
             // テーブル初期化（行がない場合のみ作成）
@@ -1635,17 +1636,26 @@ ${formData.dates[0]}
                         continue;
                     }
 
-                    // 3. 18:00以降に終わる予約は× (18:00ジャスト終了はOKとする場合)
-                    if (slotStart.getHours() >= 18 || (slotEnd.getHours() === 18 && slotEnd.getMinutes() > 0) || slotEnd.getHours() > 18) {
+                    // 3. 20:30以降に終わる予約は× (20:30ジャスト終了はOK)
+                    const closeTime = new Date(day);
+                    closeTime.setHours(20, 30, 0, 0);
+                    if (slotEnd > closeTime) {
                         cell.textContent = '✕';
                         cell.classList.add('unavailable');
                         continue;
                     }
 
-                    // 4. 営業日かどうかのチェック
-                    const isBusinessTime = businessEventTimes.some(be =>
-                        slotStart >= be.start && slotEnd <= be.end
-                    );
+                    // 4. 曜日による営業日チェック
+                    //    火曜(2)・水曜(3)・金曜(5)のみ営業。ただし第3金曜日は休み。
+                    //    月曜(1)・木曜(4)・土曜(6)・日曜(0)は休み。
+                    const dow = slotStart.getDay();
+                    let isOpenDay = (dow === 2 || dow === 3 || dow === 5);
+                    if (dow === 5) {
+                        const nthFriday = Math.floor((slotStart.getDate() - 1) / 7) + 1;
+                        if (nthFriday === 3) {
+                            isOpenDay = false; // 第3金曜日は休み
+                        }
+                    }
 
                     // 5. 他の予約と重なっていないかチェック
                     // ★高速化ポイント4：抽出済みの todaysOtherEvents だけで比較する
@@ -1654,37 +1664,15 @@ ${formData.dates[0]}
                     );
 
                     // --- 最終判定 ---
-
-                    // 営業日設定がある日
-                    if (businessEventTimes.length > 0) {
-                        if (!isBusinessTime) {
-                            cell.textContent = '✕';
-                            cell.classList.add('unavailable');
-                        } else if (isOverlap) {
-                            cell.textContent = '✕';
-                            cell.classList.add('unavailable');
-                        } else {
-                            cell.textContent = '◯';
-                            cell.classList.add('available');
-                        }
+                    if (!isOpenDay) {
+                        cell.textContent = '✕';
+                        cell.classList.add('unavailable');
+                    } else if (isOverlap) {
+                        cell.textContent = '✕';
+                        cell.classList.add('unavailable');
                     } else {
-                        // 営業日イベントがない場合
-                        const isBasicBusinessDay = parsedBusinessDays.some(bd =>
-                            slotStart >= bd.start && slotEnd <= bd.end
-                        );
-
-                        if (slotStart.getDay() === 0 && !isBasicBusinessDay) {
-                            cell.textContent = '✕';
-                            cell.classList.add('unavailable');
-                        }
-                        else if (isOverlap) {
-                            cell.textContent = '✕';
-                            cell.classList.add('unavailable');
-                        }
-                        else {
-                            cell.textContent = '◯';
-                            cell.classList.add('available');
-                        }
+                        cell.textContent = '◯';
+                        cell.classList.add('available');
                     }
                 }
             }
