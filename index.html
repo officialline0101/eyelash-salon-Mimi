@@ -1653,10 +1653,10 @@ ${formData.dates[0]}
 
                     // 3. 曜日ごとの閉店時間チェック
                     //    火曜(2)・水曜(3)・金曜(5)（第3金曜除く）→ 20:30まで
-                    //    月曜(1)・木曜(4)・土曜(6) → 18:00まで
+                    //    月曜(1)・木曜(4)・土曜(6)・第3金曜 → 18:00まで
                     const dow = slotStart.getDay();
                     let isExtendedDay = (dow === 2 || dow === 3 || dow === 5);
-                    // 第3金曜日は休みなので延長日ではない
+                    // 第3金曜日は延長なし（通常営業18:00まで）
                     if (dow === 5) {
                         const nthFriday = Math.floor((slotStart.getDate() - 1) / 7) + 1;
                         if (nthFriday === 3) {
@@ -1668,7 +1668,7 @@ ${formData.dates[0]}
                     if (isExtendedDay) {
                         closeTime.setHours(20, 30, 0, 0); // 火・水・金は20:30まで
                     } else {
-                        closeTime.setHours(18, 0, 0, 0); // 月・木・土は18:00まで
+                        closeTime.setHours(18, 0, 0, 0); // 月・木・土・第3金曜は18:00まで
                     }
                     if (slotEnd > closeTime) {
                         cell.textContent = '✕';
@@ -1677,14 +1677,9 @@ ${formData.dates[0]}
                     }
 
                     // 4. 曜日による営業日チェック
-                    //    月〜土は営業。日曜(0)は定休日。第3金曜日も休み。
+                    //    月〜土は営業。日曜(0)のみ定休日。
                     let isOpenDay = (dow >= 1 && dow <= 6); // 月〜土は営業
-                    if (dow === 5) {
-                        const nthFriday = Math.floor((slotStart.getDate() - 1) / 7) + 1;
-                        if (nthFriday === 3) {
-                            isOpenDay = false; // 第3金曜日は休み
-                        }
-                    }
+
 
                     // 5. 他の予約と重なっていないかチェック
                     // ★高速化ポイント4：抽出済みの todaysOtherEvents だけで比較する
