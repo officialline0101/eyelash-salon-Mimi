@@ -1651,44 +1651,50 @@ ${formData.dates[0]}
                         continue;
                     }
 
-                    // 3. 曜日ごとの閉店時間チェック
-                    //    火曜(2)・水曜(3)・金曜(5)（第3金曜除く）→ 20:30まで
-                    //    月曜(1)・木曜(4)・土曜(6)・第3金曜 → 18:00まで
+                    // 3. 営業可能時間の判定（GAS の isWithinBusinessHours と同じ「上書き方式」）
+                    //    ・その日に「営業日」イベントがある → そのイベントの時間内のみ営業（日曜でも可）
+                    //    ・「営業日」イベントが無い → 曜日デフォルト
+                    //        日曜(0)：定休
+                    //        火(2)・水(3)・金(5)（第3金曜除く）：〜20:30
+                    //        月(1)・木(4)・土(6)・第3金曜：〜18:00
                     const dow = slotStart.getDay();
-                    let isExtendedDay = (dow === 2 || dow === 3 || dow === 5);
-                    // 第3金曜日は延長なし（通常営業18:00まで）
-                    if (dow === 5) {
-                        const nthFriday = Math.floor((slotStart.getDate() - 1) / 7) + 1;
-                        if (nthFriday === 3) {
-                            isExtendedDay = false;
-                        }
-                    }
+                    let isOpenSlot;
 
-                    const closeTime = new Date(day);
-                    if (isExtendedDay) {
-                        closeTime.setHours(20, 30, 0, 0); // 火・水・金は20:30まで
+                    if (businessEventTimes.length > 0) {
+                        // 「営業日」イベントが上書き。施術がイベント時間内に収まる枠だけ営業
+                        isOpenSlot = businessEventTimes.some(b =>
+                            slotStart >= b.start && slotEnd <= b.end
+                        );
+                    } else if (dow === 0) {
+                        // 営業日イベントが無い日曜は定休
+                        isOpenSlot = false;
                     } else {
-                        closeTime.setHours(18, 0, 0, 0); // 月・木・土・第3金曜は18:00まで
+                        // 曜日デフォルトの閉店時間で判定
+                        let isExtendedDay = (dow === 2 || dow === 3 || dow === 5);
+                        // 第3金曜日は延長なし（通常営業18:00まで）
+                        if (dow === 5) {
+                            const nthFriday = Math.floor((slotStart.getDate() - 1) / 7) + 1;
+                            if (nthFriday === 3) {
+                                isExtendedDay = false;
+                            }
+                        }
+                        const closeTime = new Date(day);
+                        if (isExtendedDay) {
+                            closeTime.setHours(20, 30, 0, 0); // 火・水・金は20:30まで
+                        } else {
+                            closeTime.setHours(18, 0, 0, 0); // 月・木・土・第3金曜は18:00まで
+                        }
+                        isOpenSlot = (slotEnd <= closeTime);
                     }
-                    if (slotEnd > closeTime) {
-                        cell.textContent = '✕';
-                        cell.classList.add('unavailable');
-                        continue;
-                    }
 
-                    // 4. 曜日による営業日チェック
-                    //    月〜土は営業。日曜(0)のみ定休日。
-                    let isOpenDay = (dow >= 1 && dow <= 6); // 月〜土は営業
-
-
-                    // 5. 他の予約と重なっていないかチェック
+                    // 4. 他の予約と重なっていないかチェック
                     // ★高速化ポイント4：抽出済みの todaysOtherEvents だけで比較する
                     const isOverlap = todaysOtherEvents.some(event =>
                         event.start < slotEnd && slotStart < event.end
                     );
 
                     // --- 最終判定 ---
-                    if (!isOpenDay) {
+                    if (!isOpenSlot) {
                         cell.textContent = '✕';
                         cell.classList.add('unavailable');
                     } else if (isOverlap) {
