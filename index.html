@@ -1190,7 +1190,7 @@
                 }
 
                 selectedMenuTime = menuTimeMap[treatmentId] || 0;
-                selectedSymptom = [button.textContent.replace(/\n/g, ' ')];
+                selectedSymptom = [button.textContent.replace(/\s+/g, ' ').trim()];
                 menuPrice = parseInt(button.getAttribute('data-price'), 10) || 0;
             }
 
